@@ -1,4 +1,42 @@
-[
+[	
+	{
+		"Date": "2023-2-3",
+		"Name": "A new version hasn't been released! You can now import settings from Blender.",
+		"Segments": [
+			{
+				"Type": "Text",
+				"Text": "This is a pretty nice sentence about how great testing various things are. The title was also a lie. At the moment, the importing functionality comes from a separate branch that this one does not have access to. RIP."
+			},
+			{
+				"Type": "Image",
+				"Text": "https://i.insider.com/5995d3134dcf3524008b48a8?width=1000&format=jpeg&auto=webp"
+			},
+			{
+				"Type": "Text",
+				"Text": "If you think this program is pretty cool, learn how to breakdance!"
+			},
+			{
+				"Type": "Text",
+				"Text": "Here is a second bit of text, just to see if it works. Here is a second image as well. Cool!"
+			},
+			{
+				"Type": "Image",
+				"Text": "https://github.com/amSnoop/LogicReinc.BlendFarm/blob/main/.data/blender3.0-art.png"
+			},
+			{
+				"Type": "Button",
+				"Text": "Go to GitHub|https://github.com/amSnoop/LogicReinc.BlendFarm/releases"
+			},
+			{
+				"Type": "Button",
+				"Text": "https://raw.githubusercontent.com/LogicReinc/LogicReinc.BlendFarm/main/.data/patreon.png|https://www.patreon.com/LogicReinc"
+			},
+			{
+				"Type": "Empty",
+				"Text": ""
+			}
+		]
+	},
 	{
 		"Date": "2022-12-30",
 		"Name": "Version 1.1.4 is out! Blender 3.4 fixes, Scene selection, Per-Node OptiX",
