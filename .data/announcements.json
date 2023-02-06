@@ -5,7 +5,7 @@
 		"Segments": [
 			{
 				"Type": "Text",
-				"Text": "This is a pretty nice sentence about how great testing various things are. The title was also a lie. At the moment, the importing functionality comes from a separate branch that this one does not have access to. RIP."
+				"Text": "This is a pretty nice sentence about how great testing various things is. The title was also a lie. At the moment, the importing functionality comes from a separate branch that this one does not have access to. RIP."
 			},
 			{
 				"Type": "Image",
