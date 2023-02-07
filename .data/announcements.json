@@ -20,8 +20,12 @@
 				"Text": "Slightly larger text"
 			},
 			{
-				"Type": "Image",
-				"Text": "https://raw.githubusercontent.com/amSnoop/LogicReinc.BlendFarm/main/.data/blender3.0-art.png"
+				"Type": "Button",
+				"Text": "Click me to, idk, do something|https://github.com/amSnoop/LogicReinc.BlendFarm/releases"
+			},
+			{
+				"Type": "Button",
+				"Text": "https://raw.githubusercontent.com/amSnoop/LogicReinc.BlendFarm/main/.data/blender3.0-art.png|https://blender.org"
 			},
 			{
 				"Type": "Button",
