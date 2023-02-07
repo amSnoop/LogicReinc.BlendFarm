@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="LogicReinc.BlendFarm.Windows.AnnouncementWindowNew"
+        xmlns:convs="clr-namespace:LogicReinc.BlendFarm.Converters;assembly=LogicReinc.BlendFarm"
+        Title="AnnouncementWindow" Background="#333">
+	<Window.Resources>
+		<convs:ImageUrlConverter x:Key="ImageUrl" />
+	</Window.Resources>
+
+	<Grid ColumnDefinitions="*" RowDefinitions="30,Auto,*,50">
+		<ComboBox Background="#222" x:Name="announcementSelection" BorderBrush="#222" Foreground="Gray" Grid.Row="0" SelectedItem="{Binding Announcement}" Items="{Binding Announcements}" >
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding DateText}" />
+						<TextBlock Text=":" Margin="0,0,10,0" />
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		<Border Grid.Row="1" BorderThickness="0,0,0,2" BorderBrush="gray" Margin="50,20">
+			<TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" Text="{Binding Announcement.Name}" Foreground="White" FontSize="30" Margin="-20,15,-20,15"/>
+		</Border>
+		<ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
+		<Grid x:Name="Segments">
+			<Grid.Styles>
+				<Style Selector="TextBlock">
+					<Setter Property="Foreground" Value="White" />
+					<Setter Property="Margin" Value="10" />
+					<Setter Property="TextAlignment" Value="Center" />
+				</Style>
+			</Grid.Styles>
+			<Grid.Styles>
+				<Style Selector="TextBlock.Header">
+					<Setter Property="Foreground" Value="Orange" />
+					<Setter Property="Margin" Value="10" />
+					<Setter Property="TextAlignment" Value="Center" />
+				</Style>
+			</Grid.Styles>
+			<Grid.Styles>
+				<Style Selector="TextBlock.Caption">
+					<Setter Property="Foreground" Value="Blue" />
+					<Setter Property="Margin" Value="10" />
+					<Setter Property="TextAlignment" Value="Center" />
+				</Style>
+			</Grid.Styles>
+		</Grid>
+		</ScrollViewer>
+		<Grid x:Name="Buttons" Grid.Row="3" ColumnDefinitions="*,*">
+			<Grid.Styles>
+				<Style Selector="Button">
+					<Setter Property="Padding" Value="0" />
+					<Setter Property="Margin" Value="0" />
+					<Setter Property="BorderThickness" Value="0" />
+				</Style>
+				<Style Selector="Image">
+					<Setter Property="Margin" Value="0" />
+				</Style>
+			</Grid.Styles>
+		</Grid>
+	</Grid>
+</Window>

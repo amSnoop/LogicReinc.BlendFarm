@@ -117,7 +117,7 @@ This may have to do with the port being in use. Note that to discover other pcs 
 
                         if (lastAnn != null && lastAnn.Date > BlendFarmSettings.Instance.LastAnnouncementDate)
                         {
-                            new AnnouncementWindow(announcements).Show();
+                            new AnnouncementWindowNew(announcements).Show();
                             BlendFarmSettings.Instance.LastAnnouncementDate = lastAnn.Date;
                             BlendFarmSettings.Instance.Save();
                         }
@@ -297,7 +297,7 @@ This may have to do with the port being in use. Note that to discover other pcs 
         public void OpenLastAnnouncement()
         {
             if(Announcements != null)
-            new AnnouncementWindow(Announcements).Show();
+            new AnnouncementWindowNew(Announcements).Show();
         }
     }
 }

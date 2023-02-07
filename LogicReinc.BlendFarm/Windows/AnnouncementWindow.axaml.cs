@@ -18,55 +18,56 @@ namespace LogicReinc.BlendFarm.Windows
 
         public AnnouncementWindow()
         {
-            Announcements = new List<Announcement>()
-            {
-                new Announcement()
-                {
-                    Name = "Version 1.0.7 is out!",
-                    Date = DateTime.Now,
-                    Segments = new List<StorySegment>()
-                    {
-                        new StorySegment()
-                        {
-                            Type = "Text",
-                            Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus bibendum nibh eu dolor dapibus fringilla vel in velit. Nunc eleifend tellus id neque tincidunt, sed tempus sapien euismod."
-                        },
-                        new StorySegment()
-                        {
-                            Type = "Image",
-                            Text = "https://raw.githubusercontent.com/LogicReinc/LogicReinc.BlendFarm/dev-1.0.7/.data/demo1.png"
-                        },
-                        new StorySegment()
-                        {
-                            Type = "Button",
-                            Text = "Open Releases|https://github.com/LogicReinc/LogicReinc.BlendFarm/releases"
-                        }
-                    }
-                },
-                new Announcement()
-                {
-                    Name = "Older announcement",
-                    Date = DateTime.Now.Subtract(TimeSpan.FromDays(2)),
-                    Segments = new List<StorySegment>()
-                    {
-                        new StorySegment()
-                        {
-                            Type = "Text",
-                            Text = "Old Segment"
-                        },
-                        new StorySegment()
-                        {
-                            Type = "Image",
-                            Text = "https://raw.githubusercontent.com/LogicReinc/LogicReinc.BlendFarm/dev-1.0.7/.data/demo2.png"
-                        },
-                        new StorySegment()
-                        {
-                            Type = "Button",
-                            Text = "Open Releases|https://github.com/LogicReinc/LogicReinc.BlendFarm/releases"
-                        }
-                    }
-                }
-            }?.OrderByDescending(x => x.Date).ToList();
+            //Announcements = new List<Announcement>()
+            //{
+            //    new Announcement()
+            //    {
+            //        Name = "Version 1.0.7 is out!",
+            //        Date = DateTime.Now,
+            //        Segments = new List<StorySegment>()
+            //        {
+            //            new StorySegment()
+            //            {
+            //                Type = "Text",
+            //                Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus bibendum nibh eu dolor dapibus fringilla vel in velit. Nunc eleifend tellus id neque tincidunt, sed tempus sapien euismod."
+            //            },
+            //            new StorySegment()
+            //            {
+            //                Type = "Image",
+            //                Text = "https://raw.githubusercontent.com/LogicReinc/LogicReinc.BlendFarm/dev-1.0.7/.data/demo1.png"
+            //            },
+            //            new StorySegment()
+            //            {
+            //                Type = "Button",
+            //                Text = "Open Releases|https://github.com/LogicReinc/LogicReinc.BlendFarm/releases"
+            //            }
+            //        }
+            //    },
+            //    new Announcement()
+            //    {
+            //        Name = "Older announcement",
+            //        Date = DateTime.Now.Subtract(TimeSpan.FromDays(2)),
+            //        Segments = new List<StorySegment>()
+            //        {
+            //            new StorySegment()
+            //            {
+            //                Type = "Text",
+            //                Text = "Old Segment"
+            //            },
+            //            new StorySegment()
+            //            {
+            //                Type = "Image",
+            //                Text = "https://raw.githubusercontent.com/LogicReinc/LogicReinc.BlendFarm/dev-1.0.7/.data/demo2.png"
+            //            },
+            //            new StorySegment()
+            //            {
+            //                Type = "Button",
+            //                Text = "Open Releases|https://github.com/LogicReinc/LogicReinc.BlendFarm/releases"
+            //            }
+            //        }
+            //    }
+            //}?.OrderByDescending(x => x.Date).ToList();
+            Announcements = Announcement.GetAnnouncements(Constants.AnnouncementUrl).OrderByDescending(x => x.Date).ToList();
             Announcement = Announcements.FirstOrDefault();
             DataContext = this;
 
