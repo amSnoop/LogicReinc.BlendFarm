@@ -8,10 +8,6 @@
 				"Text": "Short Description"
 			},
 			{
-				"Type": "Image",
-				"Text": "https://i.insider.com/5995d3134dcf3524008b48a8?width=1000&format=jpeg&auto=webp"
-			},
-			{
 				"Type": "Caption",
 				"Text": "New type of text"
 			},
