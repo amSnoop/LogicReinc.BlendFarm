@@ -8,6 +8,10 @@
 				"Text": "Short Description"
 			},
 			{
+				"Type": "Image",
+				"Text": "https://i.pinimg.com/736x/02/f2/64/02f2649eaa7743a8e0a117c3e0a386ee--hd-galaxy-wallpaper-laptop-wallpaper-tumblr.jpg"
+			},
+			{
 				"Type": "Caption",
 				"Text": "New type of text"
 			},
@@ -16,12 +20,8 @@
 				"Text": "Slightly larger text"
 			},
 			{
-				"Type": "Button",
-				"Text": "Click me to, idk, do something|https://github.com/amSnoop/LogicReinc.BlendFarm/releases"
-			},
-			{
-				"Type": "Button",
-				"Text": "https://raw.githubusercontent.com/amSnoop/LogicReinc.BlendFarm/main/.data/blender3.0-art.png|https://blender.org"
+				"Type": "Image",
+				"Text": "https://raw.githubusercontent.com/amSnoop/LogicReinc.BlendFarm/main/.data/blender3.0-art.png"
 			},
 			{
 				"Type": "Button",
