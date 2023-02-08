@@ -11,10 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using static LogicReinc.BlendFarm.BlendFarmSettings;
 
 namespace LogicReinc.BlendFarm.Windows
@@ -32,15 +29,11 @@ namespace LogicReinc.BlendFarm.Windows
 
         private bool _startedNew = false;
 
-        private string _os = null;
         private BlendFarmManager _manager = null;
-
-        private Dictionary<string, (string,string,int)> _previouslyFoundNodes = new Dictionary<string, (string, string, int)>();
 
         private bool _noServer = false;
 
         public List<Announcement> Announcements { get; set; } = new List<Announcement>();
-        public Announcement LastAnnouncement { get; set; } = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,7 +47,6 @@ namespace LogicReinc.BlendFarm.Windows
 
             try
             {
-                _os = SystemInfo.GetOSName();
                 _noServer = false;// _os == SystemInfo.OS_MACOS;
             }
             catch(Exception ex)
@@ -69,6 +61,7 @@ namespace LogicReinc.BlendFarm.Windows
                 {
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                         MessageWindow.Show(this, "Local Server Failure",
                             $@"Local server failed to start, if you're already using a port, change it in settings. 
 Or if you're running this program twice, ignore I guess. 
@@ -83,12 +76,12 @@ Or if you're running this program twice, ignore I guess.
                             $@"Local Server failed to broadcast or receive broadcasts for auto-discovery.  It can be changed in settings.
 This may have to do with the port being in use. Note that to discover other pcs their broadcast port needs to be the same..
 (TCP: {ServerSettings.Instance.Port}, UDP: {ServerSettings.Instance.BroadcastPort})");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     });
                 };
                 LocalServer.OnDiscoveredServer += (name, address, port) =>
                 {
-                    if (_manager != null)
-                        _manager.TryAddDiscoveryNode(name, address, port);
+                        _manager?.TryAddDiscoveryNode(name, address, port);
                 };
                 LocalServer.Start();
                 Closed += (a, b) =>
@@ -111,13 +104,12 @@ This may have to do with the port being in use. Note that to discover other pcs 
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         Announcements = announcements?.OrderByDescending(x => x.Date).ToList() ?? new List<Announcement>();
-                        Announcement lastAnn = Announcements?.OrderByDescending(x => x.Date)?.FirstOrDefault();
-                        LastAnnouncement = lastAnn;
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LastAnnouncement)));
+                        Announcement lastAnn = Announcements?.FirstOrDefault();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Announcements)));
 
                         if (lastAnn != null && lastAnn.Date > BlendFarmSettings.Instance.LastAnnouncementDate)
                         {
-                            new AnnouncementWindowNew(announcements).Show();
+                            new AnnouncementWindow(announcements).Show();
                             BlendFarmSettings.Instance.LastAnnouncementDate = lastAnn.Date;
                             BlendFarmSettings.Instance.Save();
                         }
@@ -136,12 +128,11 @@ This may have to do with the port being in use. Note that to discover other pcs 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            this.AttachDevTools();
             Width = 600;
-            Height = 625;
-            MinHeight = 625;
-            MinWidth = 600;
-            MaxHeight = 625;
-            MaxWidth = 600;
+            Height = 800;
+            MinHeight = Width;
+            MinWidth = Height;
 
             fileSelection = this.FindControl<TextBox>("fileSelect");
 
@@ -151,18 +142,17 @@ This may have to do with the port being in use. Note that to discover other pcs 
 
             history = this.FindControl<ListBox>("history");
             history.Items = BlendFarmSettings.Instance.History.ToList();
-            history.SelectedItem = null;
             history.SelectionChanged += (a, b) =>{
                 if (b.AddedItems.Count > 0)
                 {
-                    string list = ((HistoryEntry)b.AddedItems[0]).Path;
-                    //history.SelectedItems = null;
+                    string path = ((HistoryEntry)b.AddedItems[0]).Path;
 
-                    fileSelection.Text = list;
+                    fileSelection.Text = path;
                 }
             };
+            history.SelectedIndex = 0;
 
-            if(_noServer)
+            if (_noServer)
                 MessageWindow.Show(this, "OSX Rendering", "Rendering using Blender is disabled for OSX due to it not being implemented fully yet. You can however render using other machines in your network. (Local render node will not be available)");
         }
 
@@ -170,11 +160,11 @@ This may have to do with the port being in use. Note that to discover other pcs 
         {
             try
             {
-                Console.WriteLine("Fetching versions from cache or remote");
-
+                Console.WriteLine("Fetching versions from cache or remote...");
+                //This should probably be offloaded to another class, but I'll probably take care of that later.
                 string versionCache = SystemInfo.RelativeToApplicationDirectory("VersionCache");
                 if (!new FileInfo(versionCache).FullName.ToLower().StartsWith("c:\\windows\\system32"))
-                    versions = BlenderVersion.GetBlenderVersions(versionCache, SystemInfo.RelativeToApplicationDirectory("VersionCustom"));
+                    versions = BlenderVersion.GetBlenderVersions(versionCache, SystemInfo.RelativeToApplicationDirectory("VersionCustom")).OrderByDescending(x => x.Date).ToList();
                 else
                     versions = new List<BlenderVersion>()
                     {
@@ -216,7 +206,7 @@ This may have to do with the port being in use. Note that to discover other pcs 
             });
             dialog.AllowMultiple = false;
 
-            Console.Write("Showing OpenFileDialog");
+            //Console.Write("Showing OpenFileDialog");
 
             //Workaround for Linux?
 
@@ -228,20 +218,17 @@ This may have to do with the port being in use. Note that to discover other pcs 
             //        AllowDirectorySelection = false
             //    });
             //else
-                results = await dialog.ShowAsync(this);
+            results = await dialog.ShowAsync(this);
 
-            results = results?.Select(x => Statics.SanitizePath(x)).ToArray();
             
 
-            if (results == null)
+            if (results == null || results.Length == 0)
                 Console.WriteLine("ShowFileDialog Results: null");
             else
             {
+                results = results?.Select(x => Statics.SanitizePath(x)).ToArray();
                 Console.Write("ShowFileDialog Results: " + string.Join(", ", results));
-                if (results.Length > 0)
-                {
                     fileSelection.Text = results[0];
-                }
             }
         }
 
@@ -297,7 +284,7 @@ This may have to do with the port being in use. Note that to discover other pcs 
         public void OpenLastAnnouncement()
         {
             if(Announcements != null)
-            new AnnouncementWindowNew(Announcements).Show();
+            new AnnouncementWindow(Announcements).Show();
         }
     }
 }

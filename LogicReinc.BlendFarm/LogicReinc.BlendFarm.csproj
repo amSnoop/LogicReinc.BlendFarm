@@ -75,8 +75,11 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Windows\AnnouncementWindowNew.axaml.cs">
-      <DependentUpon>AnnouncementWindowNew.axaml</DependentUpon>
+    <Compile Update="Windows\AnnouncementWindowOld.axaml.cs">
+      <DependentUpon>AnnouncementWindowOld.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\AnnouncementWindow.axaml.cs">
+      <DependentUpon>AnnouncementWindow.axaml</DependentUpon>
     </Compile>
     <Compile Update="Windows\BitmapViewer.axaml.cs">
       <DependentUpon>BitmapViewer.axaml</DependentUpon>

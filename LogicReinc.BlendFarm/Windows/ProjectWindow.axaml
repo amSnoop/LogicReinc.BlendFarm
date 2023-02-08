@@ -2,65 +2,70 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="625"
+        mc:Ignorable="d"
         x:Class="LogicReinc.BlendFarm.Windows.ProjectWindow"
         Title="BlendFarm by LogicReinc" Background="#222222">
-  <Window.Styles>
-    <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
-  </Window.Styles>
+	<Window.Styles>
+		<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
+	</Window.Styles>
+	<Panel>
+		<Grid RowDefinitions="150,Auto,Auto,*,Auto,Auto" Margin="30,0,30,30">
+			<Image Grid.Row="0" Source="/Images/header.png" />
+
+			<Grid Grid.Row="1" RowDefinitions="Auto,Auto" ColumnDefinitions="8*,3*">
+				<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Blender Project:" TextAlignment="Center"/>
+				<TextBox Grid.Row="1" Grid.Column="0" x:Name="fileSelect"></TextBox>
+				<Button Grid.Row="1" Grid.Column="1" Command="{Binding ShowFileDialog}">Select New File</Button>
+			</Grid>
+
+			<Grid Grid.Row="2" RowDefinitions="Auto,Auto" ColumnDefinitions="8*,3*">
+				<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Blender Version:" TextAlignment="Center"/>
+				<ComboBox x:Name="versionSelect" Grid.Row="1">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Name}"></TextBlock>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+				<Button Grid.Column="1" Grid.Row="1" Command="{Binding ShowCustomWizard}">Add Custom Version</Button>
+			</Grid>
+
+			<Grid Grid.Row="3" RowDefinitions="Auto, *">
+				<TextBlock Grid.Row="0" TextAlignment="Center">Recent Projects:</TextBlock>
+				<ListBox Grid.Row="1" x:Name="history" Background="#333333">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Background="#222222">
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="{Binding Name}"></TextBlock>
+									<TextBlock Text="{Binding Date}"></TextBlock>
+								</StackPanel>
+								<TextBlock Text="{Binding Path}"></TextBlock>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+
+			<Button Grid.Row="4" FontSize="20" Background="#400083" Command="{Binding LoadProject}">Load Project!</Button>
+			<Grid Grid.Row="5" RowDefinitions="Auto,Auto">
+				<TextBlock Grid.Row="0" TextAlignment="Center">Last Announcement:</TextBlock>
+				<Button Grid.Row="1" Background="#111" Command="{Binding OpenLastAnnouncement}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Announcements[0].DateText}"/>
+						<TextBlock Text=": "/>
+						<TextBlock Text="{Binding Announcements[0].Name}"/>
+					</StackPanel>
+				</Button>
+			</Grid>
+		</Grid>
+		<StackPanel Margin="20">
+			<StackPanel Height="400"></StackPanel>
+
+			<StackPanel Margin="0,-20,0,0">
+			</StackPanel>
 
 
-  <StackPanel Margin="20">
-    <!--
-    <TextBlock Margin="0,20,0,0" TextAlignment="Center" Foreground="#666666" FontSize="20" FontWeight="Bold">
-      LogicReinc
-    </TextBlock>
-    <TextBlock Margin="0,0,0,20" TextAlignment="Center" Foreground="#6400d1" FontSize="30" FontWeight="Bold">
-      BlendFarm
-    </TextBlock>
-    -->
-    <Image Source="/Images/header.png" Height="100" />
-    <TextBlock TextAlignment="Center">Select your .blend Project</TextBlock>
-    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="10">
-      <TextBox Width="440" FontSize="10" x:Name="fileSelect"></TextBox>
-      <Button Width="100" Command="{Binding ShowFileDialog}">Select your file</Button>
-    </StackPanel>
-    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="10">
-      <ComboBox x:Name="versionSelect" HorizontalAlignment="Center" Width="390">
-        <ComboBox.ItemTemplate>
-          <DataTemplate>
-            <TextBlock Text="{Binding Name}"></TextBlock>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
-      <Button Width="150" Command="{Binding ShowCustomWizard}">Add Custom Version</Button>
-    </StackPanel>
-    
-    <TextBlock TextAlignment="Center" Margin="0,20,0,0">Recent Projects</TextBlock>
-    <ListBox x:Name="history" Margin="10" Background="#333333" Height="200">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <StackPanel Background="#222222">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding Name}" FontSize="15" Margin="10,10,10,0" Width="400"></TextBlock>
-              <TextBlock Text="{Binding Date}" FontSize="10" Margin="10,10,10,0" Width="50"></TextBlock>
-            </StackPanel>
-            <TextBlock Text="{Binding Path}" FontSize="9" Margin="10,0,10,10"></TextBlock>
-          </StackPanel>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
-
-    <StackPanel Margin="0,-20,0,0">
-      <Button Margin="10,30,10,30" BorderThickness="0" FontSize="20" Height="50" Background="#400083" Command="{Binding LoadProject}">Load Project</Button>
-    </StackPanel>
-
-    <TextBlock Margin="10,-20,10,0" TextAlignment="Center">Last Announcement</TextBlock>
-    <Button Background="#111" Margin="10,0,10,0" BorderBrush="Transparent" Height="45" Command="{Binding OpenLastAnnouncement}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding LastAnnouncement.DateText}" Margin="10,10,5,10" />
-        <TextBlock Text="{Binding LastAnnouncement.Name}" Margin="5,10,10,10" />
-      </StackPanel>
-    </Button>
-  </StackPanel>
+		</StackPanel>
+	</Panel>
 </Window>

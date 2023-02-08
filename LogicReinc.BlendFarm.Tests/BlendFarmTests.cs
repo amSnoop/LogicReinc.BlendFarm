@@ -217,7 +217,7 @@ namespace LogicReinc.BlendFarm.Tests
             watch.Restart();
 
             int render = 0;
-            Bitmap final = await manager.Render(BLEND_FILE, new RenderManagerSettings()
+            Bitmap final = (Bitmap)await manager.Render(BLEND_FILE, new RenderManagerSettings()
             {
                 OutputWidth = 640,
                 OutputHeight = 360,
@@ -252,7 +252,7 @@ namespace LogicReinc.BlendFarm.Tests
             int render = 0;
 
             bool gotBitmap = false;
-            Bitmap final = await manager.Render(BLEND_FILE, new RenderManagerSettings()
+            Bitmap final = (Bitmap)await manager.Render(BLEND_FILE, new RenderManagerSettings()
             {
                 Strategy = RenderStrategy.Chunked,
                 ChunkHeight = 1,
@@ -294,20 +294,7 @@ namespace LogicReinc.BlendFarm.Tests
             int render = 0;
 
             bool gotBitmap = false;
-            Bitmap final = await manager.Render(BLEND_FILE, new RenderManagerSettings()
-            {
-                Strategy = RenderStrategy.SplitChunked,
-                ChunkHeight = 1,
-                ChunkWidth = 0.25m,
-                OutputWidth = 640,
-                OutputHeight = 360,
-                Samples = 8
-            }, null,
-            (task, bitmap) =>
-            {
-                bitmap.Save($"{RESULTS_DIRECTORY}/Test.Render_Managed_SplitChunked.Tile.{render++}.png");
-                gotBitmap = true;
-            });
+            Bitmap final = (Bitmap)await manager.Render(BLEND_FILE, new RenderManagerSettings() { Strategy = RenderStrategy.SplitChunked, ChunkHeight = 1, ChunkWidth = 0.25m, OutputWidth = 640, OutputHeight = 360, Samples = 8 }, null, (task, bitmap) => { bitmap.Save($"{RESULTS_DIRECTORY}/Test.Render_Managed_SplitChunked.Tile.{render++}.png"); gotBitmap = true; });
             long renderTime = watch.ElapsedMilliseconds;
 
             final.Save($"{RESULTS_DIRECTORY}/Test.Render_Managed_SplitChunked.png");

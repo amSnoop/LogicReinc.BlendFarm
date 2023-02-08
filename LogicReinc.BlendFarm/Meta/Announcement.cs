@@ -1,16 +1,12 @@
 ﻿using Avalonia.Media.Imaging;
-using LogicReinc.BlendFarm.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace LogicReinc.BlendFarm.Meta
 {
@@ -24,21 +20,19 @@ namespace LogicReinc.BlendFarm.Meta
 
         public static List<Announcement> GetAnnouncements(string url)
         {
-            using (WebClient client = new WebClient())
+            using HttpClient client = new HttpClient();
+            List<Announcement> ann = JsonSerializer.Deserialize<List<Announcement>>(client.GetStringAsync(url).Result).ToList();
+            foreach (var an in ann)
             {
-                List<Announcement> ann = JsonSerializer.Deserialize<List<Announcement>>(client.DownloadString(url)).ToList();
-                foreach (var an in ann.ToList())
+
+
+                foreach (StorySegment s in an.Segments.ToList())
                 {
-
-
-                    foreach (StorySegment s in an.Segments.ToList())
-                    {
-                        if (s.Type == "" || s.Text == "")
-                            an.Segments.Remove(s);
-                    }
+                    if (s.Type == "" || s.Text == "")
+                        an.Segments.Remove(s);
                 }
-                return ann;
             }
+            return ann;
         }
 
 
@@ -57,23 +51,24 @@ namespace LogicReinc.BlendFarm.Meta
             } }
 
         //Text Property
-        public string TextPart1 => Text.Contains("|") ? Text.Split('|')[0] : Text;
-        public string CmdURL => Text.Contains("|") ? Text.Split('|')[1] : Text;
+        public string TextPart1 => Text.Contains('|') ? Text.Split('|')[0] : Text;
+        public string CmdURL => Text.Contains('|') ? Text.Split('|')[1] : Text;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public Bitmap BitmapFromText()
+        public Bitmap BitmapFromText()//I made this a method for some reason but I don't remember why now...
         {
 
             if (Type != "Image" && Type != "Button")
                 return null;
-            if (!Text.StartsWith("http"))
+            if (!Text.ToLower().StartsWith("http"))
                 return null;
             if (_bitmapCache.ContainsKey(TextPart1))
                 return _bitmapCache[TextPart1];
 
             try
             {
-                using (WebClient client = new WebClient())
-                using (MemoryStream stream = new MemoryStream(client.DownloadData(TextPart1)))
+                using (HttpClient client = new())
+                using (MemoryStream stream = new MemoryStream(client.GetByteArrayAsync(TextPart1).Result))
                 {
                     Bitmap bitmap = new Bitmap(stream);
                     _bitmapCache.Add(TextPart1, bitmap);
@@ -91,16 +86,10 @@ namespace LogicReinc.BlendFarm.Meta
             return null;
 
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public StorySegment()
-        {
-
-        }
 
         public void Execute()
         {
-            if (CmdURL.StartsWith("http"))
+            if (CmdURL.ToLower().StartsWith("http"))
                 Process.Start(new ProcessStartInfo(CmdURL)
                 {
                     UseShellExecute = true
