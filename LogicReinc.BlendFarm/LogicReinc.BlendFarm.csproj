@@ -1,94 +1,107 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ApplicationIcon>render.ico</ApplicationIcon>
-	<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <PackageIcon>icon.png</PackageIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <AvaloniaXaml Remove="Content\**" />
-    <Compile Remove="Content\**" />
-    <EmbeddedResource Remove="Content\**" />
-    <None Remove="Content\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Icons\become_a_patron_button3x.png" />
-    <None Remove="Icons\delete.png" />
-    <None Remove="Icons\gear.png" />
-    <None Remove="Icons\github.png" />
-    <None Remove="Icons\menu-left-outline.png" />
-    <None Remove="Icons\menu-right-outline.png" />
-    <None Remove="Icons\patreon.png" />
-    <None Remove="Icons\radioOff.png" />
-    <None Remove="Icons\radioOff.zip" />
-    <None Remove="Icons\radioOn.png" />
-    <None Remove="Icons\radioOn.zip" />
-    <None Remove="Images\header.png" />
-    <None Remove="Images\icon.png" />
-    <None Remove="Images\render.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <AvaloniaResource Include="Icons\delete.png" />
-    <AvaloniaResource Include="Icons\gear.png" />
-    <AvaloniaResource Include="Icons\github.png" />
-    <AvaloniaResource Include="Icons\menu-left-outline.png" />
-    <AvaloniaResource Include="Icons\menu-right-outline.png" />
-    <AvaloniaResource Include="Icons\radioOff.png" />
-    <AvaloniaResource Include="Icons\radioOn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AvaloniaResource Include="Icons\patreon.png" />
-    <AvaloniaResource Include="Images\header.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\icon.png" />
-    <EmbeddedResource Include="Images\LogicReinc.BlendFarm.icns">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\render.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.18" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.18" />
-    <PackageReference Include="runtime.linux-x64.CoreCompat.System.Drawing" Version="1.0.0-beta009" />
-    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="6.0.5.128" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LogicReinc.BlendFarm.Client\LogicReinc.BlendFarm.Client.csproj" />
-    <ProjectReference Include="..\LogicReinc.BlendFarm.Server\LogicReinc.BlendFarm.Server.csproj" />
-    <ProjectReference Include="..\LogicReinc.BlendFarm.Shared\LogicReinc.BlendFarm.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Windows\AnnouncementWindowOld.axaml.cs">
-      <DependentUpon>AnnouncementWindowOld.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\AnnouncementWindow.axaml.cs">
-      <DependentUpon>AnnouncementWindow.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\BitmapViewer.axaml.cs">
-      <DependentUpon>BitmapViewer.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\YesNoNeverWindow.axaml.cs">
-      <DependentUpon>YesNoNeverWindow.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\YesNowWindow.axaml.cs">
-      <DependentUpon>YesNowWindow.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ApplicationIcon>render.ico</ApplicationIcon>
+		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+	</PropertyGroup>
+	<PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<AvaloniaXaml Remove="Content\**" />
+		<Compile Remove="Content\**" />
+		<EmbeddedResource Remove="Content\**" />
+		<None Remove="Content\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<AvaloniaXaml Remove="Resources.axaml" />
+		<AvaloniaXaml Remove="Styles.axaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Icons\become_a_patron_button3x.png" />
+		<None Remove="Icons\delete.png" />
+		<None Remove="Icons\gear.png" />
+		<None Remove="Icons\github.png" />
+		<None Remove="Icons\menu-left-outline.png" />
+		<None Remove="Icons\menu-right-outline.png" />
+		<None Remove="Icons\patreon.png" />
+		<None Remove="Icons\radioOff.png" />
+		<None Remove="Icons\radioOff.zip" />
+		<None Remove="Icons\radioOn.png" />
+		<None Remove="Icons\radioOn.zip" />
+		<None Remove="Images\header.png" />
+		<None Remove="Images\icon.png" />
+		<None Remove="Images\render.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Icons\delete.png" />
+		<AvaloniaResource Include="Icons\gear.png" />
+		<AvaloniaResource Include="Icons\github.png" />
+		<AvaloniaResource Include="Icons\menu-left-outline.png" />
+		<AvaloniaResource Include="Icons\menu-right-outline.png" />
+		<AvaloniaResource Include="Icons\radioOff.png" />
+		<AvaloniaResource Include="Icons\radioOn.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Icons\patreon.png" />
+		<AvaloniaResource Include="Images\header.png" />
+		<AvaloniaResource Include="Resources.axaml" />
+		<AvaloniaResource Include="Styles.axaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Images\icon.png" />
+		<EmbeddedResource Include="Images\LogicReinc.BlendFarm.icns">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Images\render.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="0.10.18" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.18" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="runtime.linux-x64.CoreCompat.System.Drawing" Version="1.0.0-beta009" />
+		<PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="6.0.5.128" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\LogicReinc.BlendFarm.Client\LogicReinc.BlendFarm.Client.csproj" />
+		<ProjectReference Include="..\LogicReinc.BlendFarm.Server\LogicReinc.BlendFarm.Server.csproj" />
+		<ProjectReference Include="..\LogicReinc.BlendFarm.Shared\LogicReinc.BlendFarm.Shared.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</Resource>
+	</ItemGroup>
+	<ItemGroup>
+		<TrimmableAssembly Include="Avalonia.Themes.Fluent" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Windows\AnnouncementWindowOld.axaml.cs">
+			<DependentUpon>AnnouncementWindowOld.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Windows\AnnouncementWindow.axaml.cs">
+			<DependentUpon>AnnouncementWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Windows\BitmapViewer.axaml.cs">
+			<DependentUpon>BitmapViewer.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Windows\RenderWindowNew.axaml.cs">
+		  <DependentUpon>RenderWindowNew.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Windows\YesNoNeverWindow.axaml.cs">
+			<DependentUpon>YesNoNeverWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Windows\YesNowWindow.axaml.cs">
+			<DependentUpon>YesNowWindow.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
 </Project>

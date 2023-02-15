@@ -3,18 +3,16 @@ using LogicReinc.BlendFarm.Shared;
 using LogicReinc.BlendFarm.Shared.Communication.RenderNode;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LogicReinc.BlendFarm.Client
 {
-    public class BlendFarmFileSession2
+    public class BlendFarmFileSession
     {
         /// <summary>
         /// ID used to identify a session (mostly by render nodes)
@@ -35,7 +33,7 @@ namespace LogicReinc.BlendFarm.Client
 
         public bool Networked { get; set; }
 
-        public BlendFarmFileSession2(string file, string localDir, string sessionID = null)
+        public BlendFarmFileSession(string file, string localDir, string sessionID = null)
         {
             BlendFile = file;
             if (sessionID != null)
@@ -45,107 +43,46 @@ namespace LogicReinc.BlendFarm.Client
         }
     }
 
-    public class BlendFarmManager2
+    public class BlendFarmManager
     {
         public const string LocalNodeName = "Local";
-
-        /// <summary>
-        /// ID used to identify a session (mostly by render nodes)
-        /// </summary>
-        //public string SessionID { get; private set; }
-        /// <summary>
-        /// Blender Version to use for renders
-        /// </summary>
         public string Version { get; private set; }
-        /// <summary>
-        /// A unique identifier used to detect change in file
-        /// </summary>
-        //public long FileID { get; private set; }
-        /// <summary>
-        /// Blendfile to render
-        /// </summary>
-        //public string BlendFile { get; private set; }
-        /// <summary>
-        /// Path to Blendfile copy used for rendering
-        /// </summary>
-        //public string LocalBlendFile { get; private set; }
 
         public string SelectedSessionID { get; set; } = null;
 
-
-        /// <summary>
-        /// Possible RenderNodes
-        /// </summary>
         public List<RenderNode> Nodes { get; private set; } = new List<RenderNode>();
 
-        /// <summary>
-        /// Nr of RenderNodes that are connected
-        /// </summary>
         public int Connected => Nodes.ToList().Where(x => x.Connected).Count();
 
-
-        /// <summary>
-        /// Interval (ms) to check for file change
-        /// </summary>
-        public int WatchInterval { get; set; } = 1000;
-
-        /// <summary>
-        /// If Blendfile is being watched for change
-        /// </summary>
+        public int WatchInterval { get; set; } = 1;
         public bool IsWatchingFile { get; private set; } = false;
 
-        /// <summary>
-        /// If Live Render is being used
-        /// </summary>
         public bool AlwaysUpdateFile { get; set; }
 
-        /// <summary>
-        /// If currently syncing
-        /// </summary>
         public bool Syncing { get; private set; } = false;
 
-        /// <summary>
-        /// If currently rendering
-        /// </summary>
         public bool IsRendering => CurrentTask != null;
 
-        /// <summary>
-        /// If file is network shared
-        /// </summary>
         public bool IsNetworked { get; set; } = false;
 
-        /// <summary>
-        /// Current render task (null if none)
-        /// </summary>
         public RenderTask CurrentTask { get; private set; } = null;
 
-        /// <summary>
-        /// Event on Blendfile changed
-        /// </summary>
         public event Action<BlendFarmManager> OnFileChanged;
 
-        /// <summary>
-        /// Event on RenderNode added
-        /// </summary>
         public event Action<BlendFarmManager, RenderNode> OnNodeAdded;
-        /// <summary>
-        /// Event on RenderNode removed
-        /// </summary>
+     
         public event Action<BlendFarmManager, RenderNode> OnNodeRemoved;
 
         private Dictionary<string, BlendFarmFileSession> _sessions = new Dictionary<string, BlendFarmFileSession>();
 
         private string _localDir = null;
 
-        public BlendFarmManager(string file, string version, string sessionID = null, string localDir = "LocalBlendFiles")
+        public BlendFarmManager(string file, string version, string localDir = "LocalBlendFiles")
         {
             _localDir = localDir;
             Directory.CreateDirectory(localDir);
             BlendFarmFileSession session = GetOrCreateSession(file);
-            //BlendFile = file;
-            //LocalBlendFile = Path.GetFullPath(Path.Combine(localDir, sessionID + ".blend"));
             Version = version;
-            //SessionID = sessionID ?? Guid.NewGuid().ToString();
             SelectedSessionID = session.SessionID;
             UpdateFileVersion(session, false);
         }
@@ -212,7 +149,6 @@ namespace LogicReinc.BlendFarm.Client
             else
                 Nodes.Add(node);
             OnNodeAdded?.Invoke(this, node);
-
             return node;
         }
         /// <summary>
@@ -225,7 +161,7 @@ namespace LogicReinc.BlendFarm.Client
             if (existing != null)
                 return existing;
 
-            return AddNode(name, addressPort, RenderType.CPU);
+            return AddNode(name, addressPort);
         }
 
         public void RemoveNode(string name)

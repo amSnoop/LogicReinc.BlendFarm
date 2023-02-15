@@ -1,0 +1,428 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+        x:Class="LogicReinc.BlendFarm.Windows.RenderWindowNew"
+        Title="NewRenderWindow"
+		MinWidth="900" MinHeight="700" Width="1920" Height="1080">
+	<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,2*,*" Background="{DynamicResource Alt}">
+
+		<!-- Header Bar -->
+		<Grid ColumnDefinitions="Auto,Auto">
+			<ListBox Background="Transparent" Classes="Projects" Items="{Binding Projects}" SelectionChanged="ProjectTabChanged" SelectedIndex="{Binding TabScrollIndex}">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal" />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Button Content="{Binding Name}" Command="{Binding SelectProject}"></Button>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<Button Grid.Column="2" FontSize="20" Padding="3,0" Margin="5,0" Command="{Binding OpenProjectDialog}">＋</Button>
+		</Grid>
+		<Grid ColumnDefinitions="*,*" Grid.Column="1">
+			<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="GitHub" Command="{Binding Github}">
+				<Image Source="/Icons/github.png" Height="15"></Image>
+			</Button>
+			<Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="Patreon" Command="{Binding Patreon}">
+				<Image Source="/Icons/patreon.png" Height="15"></Image>
+			</Button>
+		</Grid>
+		<Button Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="Help" Command="{Binding Help}">
+			Help!
+		</Button>
+
+		<Border Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{DynamicResource Main}">
+			<Grid RowDefinitions="*,Auto">
+				<Image x:Name="render"
+            
+					  Source="{Binding CurrentProject.LastBitmap}"
+					  Grid.Row="0"
+					  Grid.Column="0">
+				</Image>
+				<ProgressBar
+					  IsVisible="{Binding CurrentProject.IsRendering}"
+					  x:Name="renderProgress"
+					  Grid.Column="0"
+					  Grid.Row="1">
+
+				</ProgressBar>
+			</Grid>
+		</Border>
+		<!-- Menu Bar -->
+
+
+		<Grid Grid.Column="2" Grid.Row="1" RowDefinitions="*,Auto,*" Classes="MenuButtons">
+			<!-- Menu Buttons -->
+			<ListBox Classes="MenuButtons" Grid.Column="0" Grid.Row="1" x:Name="menuOptions">
+				<ListBoxItem Classes="MenuButtons" x:Name="Nodes" Padding="0" Margin="0">
+					<TextBlock>Nodes</TextBlock>
+				</ListBoxItem>
+				<ListBoxItem Classes="MenuButtons" x:Name="Settings" Padding="0" Margin="0">
+					<TextBlock>Settings</TextBlock>
+				</ListBoxItem>
+				<ListBoxItem Classes="MenuButtons" x:Name="Queue" Padding="0" Margin="0">
+					<TextBlock>Queue</TextBlock>
+				</ListBoxItem>
+			</ListBox>
+		</Grid>
+		<Grid Classes="MenuButtons" Grid.Column="2"  RowDefinitions="*,Auto,*" Grid.Row="2">
+			<ListBox Classes="MenuButtons" Grid.Row="1" SelectedIndex="0">
+				<ListBoxItem Classes="MenuButtons" x:Name="Render">
+					<TextBlock>Render</TextBlock>
+				</ListBoxItem>
+			</ListBox>
+		</Grid>
+		<!-- Menu Panels -->
+		<Grid Grid.Column="1" Grid.Row="1" x:Name="menuPanel" Width="400" RowDefinitions="*">
+
+			<!-- Nodes Setup menu panel -->
+			<Border Classes="Menu" Padding="25" IsVisible="{Binding #Nodes.IsSelected}" x:Name="menuNodes">
+				<Grid RowDefinitions="Auto,Auto,*, Auto">
+					<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto, *">
+						<TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,5">Add New Node:</TextBlock>
+						<TextBlock Grid.Row="1">Name:</TextBlock>
+						<TextBox Grid.Row="1" Grid.Column="1" Watermark="Name of Computer/Node" Margin="10,0,0,5" x:Name="inputClientName" Text="{Binding InputClientName}" />
+						<TextBlock Grid.Row="2">Address:</TextBlock>
+						<TextBox Grid.Row="2" Grid.Column="1" Watermark="198.168.1.1:15000" Margin="10,0,0,10" x:Name="inputClientAddress" Text="{Binding InputClientAddress}" />
+						<Button Content="Connect!" 
+                          Command="{Binding AddNewNode}"
+                          IsEnabled="{Binding ElementName=inputClientAddress, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+								Grid.ColumnSpan="2" Grid.Row="4" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Padding="20,5" />
+					</Grid>
+					<Grid ColumnDefinitions="*,Auto" Grid.Row="1">
+						<TextBlock HorizontalAlignment="Center" Margin="0,20,0,5">Render Nodes:</TextBlock>
+						<TextBlock Grid.Column="1"></TextBlock>
+					</Grid>
+					<Border Grid.Row="2" Classes="NodeList">
+						<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+							<ItemsControl Items="{Binding Nodes}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Border Classes="Node">
+											<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="2*,*">
+												<ToggleButton FontWeight="Normal" FontSize="14" Content="{Binding Name}" IsVisible="{Binding !Connected}"/>
+												<ToggleButton FontWeight="Bold" FontSize="14" Content="{Binding Name}" Classes="Connected">
+													<ToggleButton.IsVisible>
+														<MultiBinding Converter="{x:Static BoolConverters.And}">
+															<Binding Path="!IsSynced"></Binding>
+															<Binding Path="Connected"></Binding>
+														</MultiBinding>
+													</ToggleButton.IsVisible>
+												</ToggleButton>
+												<ToggleButton FontWeight="Bold" FontSize="20" Classes="Connected Synced" Content="{Binding Name}">
+													<ToggleButton.IsVisible>
+														<MultiBinding Converter="{x:Static BoolConverters.And}">
+															<Binding Path="IsSynced"></Binding>
+															<Binding Path="Connected"></Binding>
+														</MultiBinding>
+													</ToggleButton.IsVisible>
+												</ToggleButton>
+												<TextBlock  Grid.Column="2" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Top" Text="{Binding Address}" />
+
+												<Button Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" IsVisible="{Binding !Connected}"
+														IsEnabled="{Binding Activity, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+														Command="{Binding ConnectAndPrepare}"
+														CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.Version.Name}">
+													Connect
+												</Button>
+												<Button Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" IsVisible="{Binding Connected}" Command="{Binding Disconnect}">Disconnect</Button>
+												<Border Height="27" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" >
+													<TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Activity}" ToolTip.Tip="{Binding Activity}" />
+												</Border>
+											</Grid>
+										</Border>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+							<!--<Border Classes="Node Connected">
+								<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="2*,*">
+									<ToggleButton x:Name="Computer2" FontWeight="Bold" FontSize="14">Computer 2adasdasdasdasdasd</ToggleButton>
+									<Button Grid.Column="2" Grid.Row="1" Margin="5,0,0,0">Disconnect</Button>
+									<Border Height="27" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" >
+										<TextBlock VerticalAlignment="Center" TextWrapping="Wrap">Not Connected...</TextBlock>
+									</Border>
+								</Grid>
+							</Border>
+							<Border Classes="NodeSettings" IsVisible="{Binding #Computer2.IsChecked}" Margin="0,-3,0,0" BorderBrush="{DynamicResource Highlight}" BorderThickness="1,1,1,1">
+								<Grid RowDefinitions="Auto, Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+									<TextBlock >Address:</TextBlock>
+									<TextBlock Grid.Column="0" Grid.Row="1">192.168.1.1:15000</TextBlock>
+
+									<TextBlock Grid.Column="1" HorizontalAlignment="Right" TextAlignment="Right">Auto Performance:</TextBlock>
+									<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right">500%</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="2">Node Name:</TextBlock>
+									<TextBox Grid.Column="1" Grid.Row="2" Watermark="Computer 2adasdasdasdasdasd"></TextBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="3">Render Mode:</TextBlock>
+									<ComboBox Grid.Column="1" Grid.Row="3" SelectedIndex="0" HorizontalAlignment="Stretch">
+										<ComboBoxItem>
+											<TextBlock>CUDA</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>Optix</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>OpenGL</TextBlock>
+										</ComboBoxItem>
+									</ComboBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="4">Manual Performance:</TextBlock>
+									<NumericUpDown  Grid.Column="1" Grid.Row="4" Watermark="Computer2"></NumericUpDown>
+									<Button Grid.Column="0" Grid.Row="6" Grid.RowSpan="2" Background="{DynamicResource SubtleRed}">Delete Node</Button>
+									<Button Grid.Column="1" Grid.Row="6" Grid.RowSpan="3">Save Settings</Button>
+								</Grid>
+							</Border>
+							<Border Classes="Node Connected">
+								<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="100*,100*,95*">
+									<ToggleButton x:Name="Computer3" FontWeight="Bold" FontSize="14">Computer 3</ToggleButton>
+									<TextBlock  Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">192.168.1.1:15000</TextBlock>
+									<Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">Disconnect</Button>
+									<Border Height="27" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" >
+										<TextBlock VerticalAlignment="Center" TextWrapping="Wrap">Connected but not Synced.</TextBlock>
+									</Border>
+								</Grid>
+							</Border>
+							<Border Classes="NodeSettings" IsVisible="{Binding #Computer3.IsChecked}">
+								<Grid RowDefinitions="Auto, Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+									<TextBlock >Address:</TextBlock>
+									<TextBlock Grid.Column="0" Grid.Row="1">192.168.1.1:15000</TextBlock>
+
+									<TextBlock Grid.Column="1" HorizontalAlignment="Right" TextAlignment="Right">Auto Performance:</TextBlock>
+									<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right">500%</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="2">Node Name:</TextBlock>
+									<TextBox Grid.Column="1" Grid.Row="2" Watermark="Computer2"></TextBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="3">Render Mode:</TextBlock>
+									<ComboBox Grid.Column="1" Grid.Row="3" SelectedIndex="0" HorizontalAlignment="Stretch">
+										<ComboBoxItem>
+											<TextBlock>CUDA</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>Optix</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>OpenGL</TextBlock>
+										</ComboBoxItem>
+									</ComboBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="4">Manual Performance:</TextBlock>
+									<NumericUpDown  Grid.Column="1" Grid.Row="4" Watermark="Computer2"></NumericUpDown>
+									<Button Grid.Column="0" Grid.Row="6" Grid.RowSpan="2">Delete Node</Button>
+									<Button Grid.Column="1" Grid.Row="6" Grid.RowSpan="3">Save Settings</Button>
+								</Grid>
+							</Border>
+							<Border Classes="Node Connected Rendering">
+								<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="100*,100*,95*">
+									<ToggleButton x:Name="Computer4" FontWeight="Bold" FontSize="14">Computer 4</ToggleButton>
+									<TextBlock  Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">192.168.1.1:15000</TextBlock>
+									<Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">Disconnect</Button>
+									<Border Height="27" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" >
+										<TextBlock VerticalAlignment="Center" TextWrapping="Wrap">Rendering...</TextBlock>
+									</Border>
+								</Grid>
+							</Border>
+							<Border Classes="NodeSettings" IsVisible="{Binding #Computer4.IsChecked}">
+								<Grid RowDefinitions="Auto, Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+									<TextBlock >Address:</TextBlock>
+									<TextBlock Grid.Column="0" Grid.Row="1">192.168.1.1:15000</TextBlock>
+
+									<TextBlock Grid.Column="1" HorizontalAlignment="Right" TextAlignment="Right">Auto Performance:</TextBlock>
+									<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right">500%</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="2">Node Name:</TextBlock>
+									<TextBox Grid.Column="1" Grid.Row="2" Watermark="Computer2"></TextBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="3">Render Mode:</TextBlock>
+									<ComboBox Grid.Column="1" Grid.Row="3" SelectedIndex="0" HorizontalAlignment="Stretch">
+										<ComboBoxItem>
+											<TextBlock>CUDA</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>Optix</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>OpenGL</TextBlock>
+										</ComboBoxItem>
+									</ComboBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="4">Manual Performance:</TextBlock>
+									<NumericUpDown  Grid.Column="1" Grid.Row="4" Watermark="Computer2"></NumericUpDown>
+									<Button Grid.Column="0" Grid.Row="6" Grid.RowSpan="2">Delete Node</Button>
+									<Button Grid.Column="1" Grid.Row="6" Grid.RowSpan="3">Save Settings</Button>
+								</Grid>
+							</Border>
+							<Border Classes="Node Connected Error">
+								<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="100*,100*,95*">
+									<ToggleButton x:Name="Computer5" FontWeight="Bold" FontSize="14">Computer 5</ToggleButton>
+									<TextBlock  Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">192.168.1.1:15000</TextBlock>
+									<Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">Disconnect</Button>
+									<Border Height="27" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" >
+										<TextBlock VerticalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip.Tip="ERROR! Something has gone horribly wrong and something should probably be done about that, but it's not my problem so good luck lmfao">ERROR! Something has gone horribly wrong and something should probably be done about that, but it's not my problem so good luck lmfao</TextBlock>
+									</Border>
+								</Grid>
+							</Border>
+							<Border Classes="NodeSettings" IsVisible="{Binding #Computer5.IsChecked}">
+								<Grid RowDefinitions="Auto, Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+									<TextBlock >Address:</TextBlock>
+									<TextBlock Grid.Column="0" Grid.Row="1">192.168.1.1:15000</TextBlock>
+
+									<TextBlock Grid.Column="1" HorizontalAlignment="Right" TextAlignment="Right">Auto Performance:</TextBlock>
+									<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right">500%</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="2">Node Name:</TextBlock>
+									<TextBox Grid.Column="1" Grid.Row="2" Watermark="Computer2"></TextBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="3">Render Mode:</TextBlock>
+									<ComboBox Grid.Column="1" Grid.Row="3" SelectedIndex="0" HorizontalAlignment="Stretch">
+										<ComboBoxItem>
+											<TextBlock>CUDA</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>Optix</TextBlock>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock>OpenGL</TextBlock>
+										</ComboBoxItem>
+									</ComboBox>
+
+									<TextBlock  Grid.Column="0" Grid.Row="4">Manual Performance:</TextBlock>
+									<NumericUpDown  Grid.Column="1" Grid.Row="4" Watermark="Computer2"></NumericUpDown>
+									<Button Grid.Column="0" Grid.Row="6" Grid.RowSpan="2">Delete Node</Button>
+									<Button Grid.Column="1" Grid.Row="6" Grid.RowSpan="3">Save Settings</Button>
+								</Grid>
+							</Border>-->
+						</ScrollViewer>
+					</Border>
+					<Grid Grid.Row="5" ColumnDefinitions="*,*">
+						<Button HorizontalAlignment="Stretch" Command="{Binding ConnectAll}" HorizontalContentAlignment="Center" Margin="20,15,15,0">Connect All</Button>
+						<Button Grid.Column="1" HorizontalAlignment="Stretch" Command="{Binding SyncAll}" HorizontalContentAlignment="Center" Margin="15,15,20,0">Sync All</Button>
+					</Grid>
+				</Grid>
+			</Border>
+
+			<!-- Settings menu panel -->
+			<Border Classes="Menu MenuSettings" IsVisible="{Binding #Settings.IsSelected}" x:Name="menuSettings">
+				<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
+					<TextBlock>Image Settings:</TextBlock>
+					<Border Grid.Row="1">
+						<Grid Classes="ImageSettings" ColumnDefinitions="*, *, *, *" RowDefinitions="Auto,Auto,Auto">
+							<TextBlock Grid.Row="0" Grid.Column="0">Width:</TextBlock>
+							<NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding CurrentProject.RenderWidth}"/>
+							<TextBlock Grid.Row="0" Grid.Column="2">Height:</TextBlock>
+							<NumericUpDown Grid.Row="0" Grid.Column="3" Value="{Binding CurrentProject.RenderHeight}"/>
+							<TextBlock Grid.Row="1" Grid.Column="0">Samples:</TextBlock>
+							<NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding CurrentProject.Samples}"/>
+							<TextBlock Grid.Row="1" Grid.Column="2">Frame:</TextBlock>
+							<NumericUpDown Grid.Row="1" Grid.Column="3"/>
+							<TextBlock Grid.Row="2" Grid.Column="0">Scene:</TextBlock>
+							<AutoCompleteBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Watermark="Inherit/Main" Text="{Binding CurrentProject.Scene}" x:Name="availableScenesBox" />
+						</Grid>
+					</Border>
+					<TextBlock Grid.Row="2">Animation Settings:</TextBlock>
+					<Border Grid.Row="3">
+						<Grid Classes="AnimationSettings" ColumnDefinitions="Auto, *, *, *" RowDefinitions="Auto,Auto,Auto">
+							<TextBlock Grid.Row="0" Grid.Column="0">Start Frame:</TextBlock>
+							<NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding CurrentProject.FrameStart}"/>
+							<TextBlock Grid.Row="0" Grid.Column="2">End Frame:</TextBlock>
+							<NumericUpDown Grid.Row="0" Grid.Column="3" Value="{Binding CurrentProject.FrameEnd}"/>
+							<TextBlock Grid.Row="1" Grid.Column="0">Frame Step:</TextBlock>
+							<NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding CurrentProject.FPS}" IsEnabled="{Binding CurrentProject.UseFPS}"></NumericUpDown>
+							<TextBlock Grid.Row="1" Grid.Column="2">Output Type:</TextBlock>
+							<ComboBox x:Name="selectOutputType" Grid.Row="1" Grid.Column="3" SelectedIndex="0" Items="{Binding ImageFormats}" SelectedItem="{Binding CurrentProject.RenderFormat}">
+							</ComboBox>
+							<TextBlock Grid.Row="2" Grid.Column="0">Name Format:</TextBlock>
+							<TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentProject.AnimationFileFormat}"/>
+						</Grid>
+					</Border>
+					<TextBlock Grid.Row="4">System Settings:</TextBlock>
+					<Border Grid.Row="5">
+						<Grid Classes="SystemSettings" ColumnDefinitions="*, *,*, *" RowDefinitions="Auto,Auto,Auto">
+							<TextBlock Grid.Row="0" Grid.Column="0">Engine:</TextBlock>
+							<ComboBox Grid.Row="0" Grid.Column="1" SelectedIndex="0" x:Name="selectRenderType" Items="{Binding EngineOptions}" SelectedItem="{Binding CurrentProject.Engine}"/>
+							<TextBlock Grid.Row="0" Grid.Column="2">Denoiser:</TextBlock>
+							<ComboBox Grid.Row="0" Grid.Column="3" Items="{Binding DenoiserOptions}" SelectedItem="{Binding CurrentProject.Denoiser}">
+							</ComboBox>
+							<TextBlock Grid.Row="1" Grid.Column="0">Chunk Size:</TextBlock>
+							<NumericUpDown Grid.Row="1" Grid.Column="1" ShowButtonSpinner="False"  Value="{Binding CurrentProject.ChunkSize}" ToolTip.Tip="Chunksize for Chunked and SplitChunked, may be modified in certain scenarios"/>
+							<TextBlock Grid.Row="1" Grid.Column="2">Order:</TextBlock>
+							<ComboBox Grid.Row="1" Grid.Column="3" SelectedIndex="0" x:Name="selectOrder"/>
+							<TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,-15,0">Render Strategy:</TextBlock>
+							<ComboBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" SelectedIndex="0" Margin="20,0,0,0" x:Name="selectStrategy"/>
+						</Grid>
+					</Border>
+					<ToggleButton Grid.Row="6" x:Name="FilePath" IsDefault="True">Networked Filepath</ToggleButton>
+					<Grid IsVisible="{Binding #FilePath.IsChecked}" Grid.Row="7" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto">
+						<TextBlock Grid.Row="0" Grid.Column="0">Windows Path:</TextBlock>
+						<TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+						<TextBlock Grid.Row="1" Grid.Column="0">Linux Path:</TextBlock>
+						<TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+						<TextBlock Grid.Row="2" Grid.Column="0">MacOS Path:</TextBlock>
+						<TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+					</Grid>
+					<Button Grid.Row="8" Command="{Binding SaveAsDefault}">Save as Default Settings</Button>
+				</Grid>
+			</Border>
+			<!-- Queue menu panel -->
+			<Border Classes="Menu MenuQueue" IsVisible="{Binding #Queue.IsSelected}" x:Name="menuQueue">
+				<Grid>
+					<TextBlock IsVisible="False" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center">No Items in the queue...</TextBlock>
+					<Border>
+						<ListBox>
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,*">
+										<TextBlock FontWeight="Bold" Text="{Binding Name}"/>
+										<TextBlock Grid.Row="1" Text="{Binding State}"></TextBlock>
+										<Button Grid.Column="1" Grid.RowSpan="2">Save</Button>
+										<Button Grid.Column="2" Grid.RowSpan="2">Delete</Button>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Border>
+				</Grid>
+			</Border>
+		</Grid>
+
+
+		<Border Margin="0,0,0,0" Classes="Menu MenuRender" Grid.Row="2" Grid.Column="1" IsVisible="{Binding #Render.IsSelected}" Width="400">
+			<Grid RowDefinitions="*,Auto,Auto,Auto,*,Auto,Auto,*" ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
+				<TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" TextAlignment="Center">
+					Mode:
+				</TextBlock>
+				<ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" x:Name="renderType">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBoxItem>
+						Image
+					</ListBoxItem>
+					<ListBoxItem>
+						Animation
+					</ListBoxItem>
+					<ListBoxItem>
+						Live Render
+					</ListBoxItem>
+				</ListBox>
+				<ToggleButton Grid.Column="0" Grid.Row="3" IsChecked="{Binding CurrentProject.UseWorkaround}" ToolTip.Tip="Workaround for a Blender bug, once fixed, it may cause odd tile order, then disable this">Use Workaround</ToggleButton>
+				<ToggleButton Grid.Column="1" Grid.Row="3" Checked="CheckUseQueue" Unchecked="CheckUseQueue">Enable Queue</ToggleButton>
+				<Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" x:Name="RenderButton" Classes="Rendering" FontSize="20" IsVisible="{Binding !CurrentProject.IsRendering}" Command="{Binding RenderStart}" >
+					<TextBlock IsVisible="">
+						
+					</TextBlock>
+				</Button>
+				<Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Classes="Rendering" FontSize="20" IsVisible="{Binding CurrentProject.IsRendering}" Command="{Binding CancelRender}" Background="{DynamicResource SubtleRed}">Cancel!</Button>
+				<Button Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Margin="20,15" Command="{Binding SaveImage}">Save Result</Button>
+			</Grid>
+		</Border>
+	</Grid>
+</Window>

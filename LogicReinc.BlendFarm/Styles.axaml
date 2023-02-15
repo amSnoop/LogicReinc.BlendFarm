@@ -1,0 +1,546 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+			<TextBlock>This file is not set up to be previewable.</TextBlock>
+        </Border>
+    </Design.PreviewWith>
+	
+	<!--################################################ Global styles: ################################################-->
+
+	
+	<!--############# Text Blocks #############-->
+	<Style Selector="TextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+		<Setter Property="FontSize" Value="15" />
+	</Style>
+
+	
+	<!--############# Text Boxes #############-->
+	<!-- Borders and Backgrounds: -->
+	<Style Selector="TextBox">
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	<Style Selector="TextBox:empty /template/ Border#PART_BorderElement">
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="Opacity" Value="1" />
+		<Setter Property="CornerRadius" Value="0" />
+	</Style>
+	<Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+		<Setter Property="Background" Value="#111" />
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="CornerRadius" Value="0" />
+	</Style>
+	<Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+		<Setter Property="Background" Value="#111" />
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="CornerRadius" Value="0" />
+	</Style>
+	<!-- Text: -->
+	<Style Selector="TextBox /template/ TextPresenter#PART_TextPresenter">
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="TextBox:empty /template/ TextPresenter#PART_TextPresenter">
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="TextBox:focus /template/ TextPresenter#PART_TextPresenter">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="SelectionBrush" Value="{DynamicResource Accent}" />
+	</Style>
+	<Style Selector="TextBox:focus-within /template/ TextPresenter#PART_TextPresenter">
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<!-- Watermark: -->
+	<Style Selector="TextBox:empty /template/ TextBlock#PART_Watermark">
+		<Setter Property="Foreground" Value="White" />
+		<!-- This does nothing -->
+		<Setter Property="Opacity" Value="1" />
+	</Style>
+
+	
+	<!--############# Numeric Up Down #############-->
+	<!-- Borders and Backgrounds: -->
+	<Style Selector="NumericUpDown">
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="ShowButtonSpinner" Value="False" />
+	</Style>
+	<Style Selector="NumericUpDown:focus-within Border">
+		<Setter Property="Background" Value="#111" />
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="BorderThickness" Value="1.2" />
+		<Setter Property="Opacity" Value="1" />
+		<Setter Property="CornerRadius" Value="0" />
+	</Style>
+	<Style Selector="NumericUpDown /template/ TextBox#PART_TextBox">
+		<Setter Property="Padding" Value="10,5,6,4" />
+	</Style>
+	<!-- Text: -->
+	<Style Selector="NumericUpDown /template/ TextBox#PART_TextBox /template/ Border#PART_BorderElement">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="BorderThickness" Value="0" />
+	</Style>
+	<Style Selector="NumericUpDown:focus-within /template/ TextPresenter#PART_TextPresenter">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="SelectionBrush" Value="{DynamicResource Accent}" />
+	</Style>
+
+	
+	<!--############# Combo Boxes #############-->
+	<!-- Borders and Backgrounds: -->
+	<Style Selector="ComboBox">
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="HorizontalContentAlignment" Value="Left" />
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+	<!-- Cannot change this, these are set locally. rewriting the controller for the popup would be required and I don't feel like doing that.
+	<Style Selector="ComboBox /template/ Popup#PART_Popup /template/ ContentPresenter#PART_ContentPresenter Border#PopupBorder">
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="CornerRadius" Value="0" />
+	</Style> -->
+	<!-- Items: -->
+	<Style Selector="ComboBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonHoveredBackground}" />
+	</Style>
+	<Style Selector="ComboBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+
+	<!--############# Buttons (Not Toggle Buttons) #############-->
+	<!-- Borders and Backgrounds: -->
+	<Style Selector="Button">
+		<Setter Property="CornerRadius" Value="5" />
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+	</Style>
+	<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonHoveredBackground}" />
+	</Style>
+	<Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+	
+	<!--############# ToggleButtons #############-->
+	<!-- Borders and Backgrounds: -->
+	<Style Selector="ToggleButton">
+		<Setter Property="CornerRadius" Value="5" />
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+	</Style>
+	<Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonHoveredBackground}" />
+	</Style>
+	<Style Selector="ToggleButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+	<Style Selector="ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="ToggleButton:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+
+
+	
+	<!--################################################ Header Buttons: ################################################-->
+	<!-- GitHub -->
+	<Style Selector="Button#GitHub">
+		<Setter Property="Background" Value="Black" />
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Button#GitHub:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Black" />
+	</Style>
+	<Style Selector="Button#GitHub:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Black" />
+	</Style>
+	<!-- Patreon -->
+	<Style Selector="Button#Patreon">
+		<Setter Property="Background" Value="{DynamicResource PatreonColor}" />
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Button#Patreon:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource PatreonColor}" />
+	</Style>
+	<Style Selector="Button#Patreon:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource PatreonColor}" />
+	</Style>
+	<!-- Help -->
+	<Style Selector="Button#Help">
+		<Setter Property="Background" Value="{DynamicResource Accent}" />
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Button#Help:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MoreAccent}" />
+	</Style>
+	<Style Selector="Button#Help:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MoreAccent}" />
+	</Style>
+
+	
+	
+	<!--################################################ Header Project List: ################################################-->
+	<Style Selector="ListBox.Projects ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="ListBox.Projects ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+	
+	
+	<!--################################################ Menu Buttons: ################################################-->
+	<Style Selector="ListBoxItem.MenuButtons > TextBlock">
+		<Setter Property="FontSize" Value="20" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="RenderTransform">
+			<Setter.Value>
+				<RotateTransform Angle="90" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="ListBox.MenuButtons">
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="Padding" Value="0" /> 
+		<Setter Property="SelectionMode" Value="Single,Toggle" />
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="VerticalAlignment" Value="Top" />
+	</Style>
+	<Style Selector="ListBoxItem.MenuButtons">
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Height" Value="125"/><!-- This is required because of the way rotating text works... -->
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="Background" Value="{DynamicResource MenuButtonBackground}" />
+	</Style>
+	<Style Selector="ListBoxItem.MenuButtons:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonHoveredBackground}" />
+	</Style>
+	<Style Selector="ListBoxItem.MenuButtons:selected /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="ListBoxItem.MenuButtons:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+
+	
+
+	<!--################################################ Menu Panel: ################################################-->	
+	<Style Selector="Border.Menu">
+		<Setter Property="Padding" Value="25,25,25,25" />
+		<Setter Property="BorderThickness" Value="0,0,1,0" />
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+	</Style>
+	<Style Selector="Border.Menu > Grid > Grid > TextBlock" >
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+
+
+	<!--################################################ Nodes Menu: ################################################-->
+	<!-- Whole Node List -->
+	<Style Selector="Border.NodeList" >
+		<Setter Property="Background" Value="{DynamicResource BackgroundMain}" />
+		<Setter Property="Padding" Value="5" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="BorderThickness" Value="2" />
+	</Style>
+	<Style Selector="Border.NodeList > ScrollViewer > StackPanel > Border" >
+		<Setter Property="Background" Value="{DynamicResource NodeUnconnectedBackground}" />
+		<Setter Property="Margin" Value="0,2" />
+		<Setter Property="Padding" Value="10" />
+	</Style>
+	<Style Selector="Border.Node TextBlock" >
+		<Setter Property="FontSize" Value="11" />
+		<Setter Property="Foreground" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	<Style Selector="Border.NodeList Border.Connected TextBlock" >
+		<Setter Property="Foreground" Value="White" />
+	</Style>
+	<Style Selector="Border.NodeList Button" >
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Border.NodeList > Grid > Grid > TextBox" >
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+	</Style>
+
+	<!--############# ToggleButton Changes #############-->
+
+	<Style Selector="Border.NodeList ToggleButton">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Padding" Value="0,-2,0,0" />
+		<Setter Property="Margin" Value="0" />
+	</Style>
+	<Style Selector="Border.NodeList ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="Border.NodeList ToggleButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="Border.NodeList ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="Border.NodeList ToggleButton:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<!-- Underline Text -->
+	<Style Selector="Border.NodeList ToggleButton:checked AccessText">
+		<Setter Property="TextDecorations" Value="Underline" />
+		<Setter Property="Foreground" Value="{DynamicResource MoreAccent}" />
+	</Style>
+	<Style Selector="Border.NodeList ToggleButton AccessText">
+		<Setter Property="TextDecorations" Value="Underline" />
+	</Style>
+	
+	<!--############# State-based Styles #############-->
+	
+	<!-- Connected but not synced: -->
+	<Style Selector="Border.NodeList Border.Connected" >
+		<Setter Property="BorderBrush" Value="{DynamicResource Highlight}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource NodeConnectedBackground}" />
+	</Style>
+	<Style Selector="Border.NodeList Border.Connected Button" >
+		<Setter Property="Background" Value="{DynamicResource NodeButtonConnected}" />
+	</Style>
+	<!-- Synced -->
+	<Style Selector="Border.NodeList Border.Synced" >
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource NodeReadyBackground}" />
+	</Style>
+	<!-- Error -->
+	<Style Selector="Border.NodeList Border.Error" >
+		<Setter Property="BorderBrush" Value="{DynamicResource NodeErrorBorder}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource NodeErrorBackground}" />
+	</Style>
+	<!-- Rendering -->
+	<Style Selector="Border.NodeList Border.Rendering" >
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource NodeReadyBackground}" />
+	</Style>
+	
+	<!--############# Node Settings Contianer #############-->
+	<Style Selector="Border.NodeSettings TextBox">
+		<Setter Property="FontSize" Value="11" />
+	</Style>
+	<Style Selector="Border.NodeSettings TextBlock">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="FontSize" Value="11" />
+	</Style>
+	<Style Selector="Border.NodeSettings NumericUpDown">
+		<Setter Property="ShowButtonSpinner" Value="False" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="FontSize" Value="11" />
+	</Style>
+	<Style Selector="Border.NodeSettings > Grid > TextBox /template/ Border#PART_BorderElement, Border.NodeList ComboBox, Border.NodeList NumericUpDown" >
+			<Setter Property="Margin" Value="5,2,0,2" />
+	</Style>
+	<Style Selector="Border.NodeSettings TextBlock" >
+		<Setter Property="Margin" Value="1" />
+	</Style>
+	<Style Selector="Border.NodeSettings Button" >
+		<Setter Property="Margin" Value="0,5,0,0" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+	</Style>
+
+
+
+	<!--################################################ Settings Menu: ################################################-->
+	<!--############# General #############-->
+	<Style Selector="Border.MenuSettings">
+		<Setter Property="Padding" Value="25,0,25,25" />
+	</Style>
+	<Style Selector="Border.MenuSettings > Grid > Border" >
+		<Setter Property="Padding" Value="5,10,5,5" />
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	<Style Selector="Border.MenuSettings > Grid > Border:pointerover,Border.MenuSettings > Grid > Border:focus-within" >
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+	</Style>
+	<Style Selector="Border.MenuSettings TextBlock" >
+		<Setter Property="FontSize" Value="12" />
+	</Style>
+	<Style Selector="Border.MenuSettings TextBox" >
+		<Setter Property="FontSize" Value="12" />
+	</Style>
+	<Style Selector="Border.MenuSettings NumericUpDown" >
+		<Setter Property="FontSize" Value="12" />
+	</Style>
+	<Style Selector="Border.MenuSettings > Grid > TextBlock" >
+		<Setter Property="FontSize" Value="15" />
+		<Setter Property="Margin" Value="0,15,0,5" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Border.MenuSettings > Grid > Border > Grid > TextBlock" >
+		<Setter Property="Margin" Value="0,0,5,0" />
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="TextAlignment" Value="Right" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Border.MenuSettings TextBox, Border.MenuSettings NumericUpDown, Border.MenuSettings ComboBox" >
+		<Setter Property="Margin" Value="0,0,0,5" />
+	</Style>
+	<Style Selector="Border.MenuSettings ToggleButton, Border.MenuSettings Button" >
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="Margin" Value="0,5,0,0" />
+	</Style>
+
+	
+	
+	<!--################################################ Queue Menu: ################################################-->
+	<Style Selector="Border.MenuQueue > Grid > Border" >
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+		<Setter Property="Padding" Value="5" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBox" >
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem" >
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+		<Setter Property="Margin" Value="0,0,0,5" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem TextBlock" >
+		<Setter Property="Foreground" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem.Active TextBlock" >
+		<Setter Property="Foreground" Value="White" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem.Active" >
+		<Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="Background" Value="{DynamicResource LessHighlight}" />
+		<Setter Property="Foreground" Value="White" />
+	</Style>
+	
+	<Style Selector="Border.MenuQueue ListBoxItem Button" >
+		<Setter Property="Background" Value="{DynamicResource LessHighlight}" />
+		<Setter Property="Margin" Value="10,0,0,0" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem Button:pointerover /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource Highlight}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem.Active Button" >
+		<Setter Property="Background" Value="{DynamicResource Alt}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem.Active Button:pointerover /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem Button:pressed /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource Accent}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem:selected Button:pressed /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	
+	<Style Selector="Border.MenuQueue ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreAccent}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem:pointerover:selected /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	
+	<Style Selector="Border.MenuQueue ListBoxItem.Active:pointerover /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource Highlight}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreAccent}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem.Active:selected /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	<Style Selector="Border.MenuQueue ListBoxItem.Active:pointerover:selected /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+	</Style>
+	
+	
+	
+	<!--################################################ Render Menu: ################################################-->
+	<Style Selector="Border.MenuRender > Grid > TextBlock" >
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="TextAlignment" Value="Center" />
+		<Setter Property="Margin" Value="0,0,0,-5" />
+	</Style>
+	<Style Selector="Border.MenuRender Button, Border.MenuRender ToggleButton" >
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="Margin" Value="20,5,20,5" />
+	</Style>
+	<Style Selector="Border.MenuRender ListBox" >
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="Margin" Value="20,10" />
+	</Style>
+	<Style Selector="Border.MenuRender ListBoxItem" >
+		<Setter Property="Background" Value="{DynamicResource Main}" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="Border.MenuRender ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource Highlight}" />
+	</Style>
+	<Style Selector="Border.MenuRender ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="Border.MenuRender ListBoxItem:pointerover:selected /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+	<Style Selector="Button#RenderButton:pressed /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="Button#RenderButton" >
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreHighlight}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedBackground}" />
+	</Style>
+	<Style Selector="Button#RenderButton:pointerover /template/ ContentPresenter#PART_ContentPresenter" >
+		<Setter Property="BorderBrush" Value="{DynamicResource MoreMoreHighlight}" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="Background" Value="{DynamicResource MenuButtonSelectedHoveredBackground}" />
+	</Style>
+</Styles>

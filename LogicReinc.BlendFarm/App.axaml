@@ -2,12 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Name="BlendFarm by LogicReinc"
              x:Class="LogicReinc.BlendFarm.App">
-    <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
-    </Application.Styles>
-  <NativeMenu.Menu>
-    <NativeMenu>
-    </NativeMenu>
-  </NativeMenu.Menu>
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Resources.axaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+	<Application.Styles>
+		<!-- v  Don't delete this line  v -->
+		<FluentTheme Mode="Dark" />
+		<StyleInclude Source="/Styles.axaml" />
+	</Application.Styles>
 </Application>

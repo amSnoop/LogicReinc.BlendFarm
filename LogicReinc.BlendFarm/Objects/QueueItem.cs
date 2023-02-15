@@ -3,6 +3,7 @@ using LogicReinc.BlendFarm.Client;
 using LogicReinc.BlendFarm.Client.ImageTypes;
 using LogicReinc.BlendFarm.Client.Tasks;
 using LogicReinc.BlendFarm.Shared;
+using LogicReinc.BlendFarm.ViewModels;
 using LogicReinc.BlendFarm.Windows;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace LogicReinc.BlendFarm.Objects
 {
     public class QueueItem : INotifyPropertyChanged
     {
-        private RenderWindow _owner = null;
+        private RenderWindowViewModel _owner = null;
 
         public string ID { get; set; }
         public OpenBlenderProject Project { get; set; }
@@ -48,7 +49,7 @@ namespace LogicReinc.BlendFarm.Objects
 
         public System.Drawing.Image LastImage { get; set; }
 
-        public QueueItem(RenderWindow owner, OpenBlenderProject proj, RenderManagerSettings settings, string saveTo = null, int frames = 1)
+        public QueueItem(RenderWindowViewModel owner, OpenBlenderProject proj, RenderManagerSettings settings, string saveTo = null, int frames = 1)
         {
             _owner = owner;
             Frames = frames;
@@ -59,7 +60,7 @@ namespace LogicReinc.BlendFarm.Objects
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public async Task UpdateValues(RenderWindow window, BlendFarmManager manager, RenderManagerSettings settings)
+        public async Task UpdateValues(RenderWindowViewModel window, BlendFarmManager manager, RenderManagerSettings settings)
         {
             Settings = settings;
 
@@ -70,7 +71,7 @@ namespace LogicReinc.BlendFarm.Objects
             }
         }
 
-        public async Task Execute(RenderWindow window, BlendFarmManager manager)
+        public async Task Execute(RenderWindowViewModel window, BlendFarmManager manager)
         {
             try
             {
@@ -142,7 +143,7 @@ namespace LogicReinc.BlendFarm.Objects
                         }
                         catch (Exception ex)
                         {
-                            MessageWindow.Show(_owner, "Frame Save Error", $"Animation frame {task.Frame} failed to save due to:" + ex.Message);
+                            MessageWindow.Show(_owner.WindowNew, "Frame Save Error", $"Animation frame {task.Frame} failed to save due to:" + ex.Message);
                             return;
                         }
 
@@ -234,9 +235,9 @@ namespace LogicReinc.BlendFarm.Objects
                 if (Completed)
                 {
                     if (!string.IsNullOrEmpty(SaveTo))
-                        BitmapViewer.Show(_owner, Project.BlendFile, LastImage.ToAvaloniaBitmap());
+                        BitmapViewer.Show(_owner.WindowNew, Project.BlendFile, LastImage.ToAvaloniaBitmap());
                     else
-                        BitmapViewer.Show(_owner, Project.BlendFile, LastImage.ToAvaloniaBitmap());
+                        BitmapViewer.Show(_owner.WindowNew, Project.BlendFile, LastImage.ToAvaloniaBitmap());
                 }
             }
             catch (Exception ex)

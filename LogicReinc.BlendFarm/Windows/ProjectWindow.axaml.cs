@@ -6,6 +6,7 @@ using LogicReinc.BlendFarm.Client;
 using LogicReinc.BlendFarm.Meta;
 using LogicReinc.BlendFarm.Server;
 using LogicReinc.BlendFarm.Shared;
+using LogicReinc.BlendFarm.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -266,7 +267,7 @@ This may have to do with the port being in use. Note that to discover other pcs 
 
             string localPath = SystemInfo.RelativeToApplicationDirectory(BlendFarmSettings.Instance.LocalBlendFiles);
             //Setup manager
-            _manager = new BlendFarmManager(path, version.Name, null, localPath);
+            _manager = new BlendFarmManager(path, version.Name, localPath);
 
             if(!_noServer && !BlendFarmSettings.Instance.PastClients.Any(x=>x.Key == BlendFarmManager.LocalNodeName))
                 _manager.AddNode(BlendFarmManager.LocalNodeName, $"localhost:{LocalServer.ServerPort}");
@@ -276,7 +277,7 @@ This may have to do with the port being in use. Note that to discover other pcs 
 
             //Start render window
             //new RenderWindow();
-            new RenderWindow(_manager, version, path).Show();
+            new RenderWindowViewModel(_manager, version, path); ;
 
             this.Close();
         }
